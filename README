@@ -1,0 +1,261 @@
+NAME
+    Exporter::Tiny - an exporter with the features of Sub::Exporter but only
+    core dependencies
+
+SYNOPSIS
+       package MyUtils;
+       use base "Exporter::Tiny";
+       our @EXPORT = qw(frobnicate);
+       sub frobnicate { my $n = shift; ... }
+       1;
+
+       package MyScript;
+       use MyUtils "frobnicate" => { -as => "frob" };
+       print frob(42);
+       exit;
+
+DESCRIPTION
+    Exporter::Tiny supports many of Sub::Exporter's external-facing features
+    including renaming imported functions with the `-as`, `-prefix` and
+    `-suffix` options; explicit destinations with the `into` option; and
+    alternative installers with the `installler` option. But it's written in
+    only about 40% as many lines of code and with zero non-core dependencies.
+
+    Its internal-facing interface is closer to Exporter.pm, with configuration
+    done through the @EXPORT, @EXPORT_OK and %EXPORT_TAGS package variables.
+
+    Exporter::Tiny performs most of its internal duties (including resolution
+    of tag names to sub names, resolution of sub names to coderefs, and
+    installation of coderefs into the target package) as method calls, which
+    means they can be overridden to provide interesting behaviour.
+
+  Utility Functions
+    These are really for internal use, but can be exported if you need them.
+
+    `mkopt(\@array)`
+        Similar to `mkopt` from Data::OptList. It doesn't support all the
+        fancy options that Data::OptList does (`moniker`, `require_unique`,
+        `must_be` and `name_test`) but runs about 50% faster.
+
+    `mkopt_hash(\@array)`
+        Similar to `mkopt_hash` from Data::OptList. See also `mkopt`.
+
+TIPS AND TRICKS IMPORTING FROM EXPORTER::TINY
+    For the purposes of this discussion we'll assume we have a module called
+    `MyUtils` which exports one function, `frobnicate`. `MyUtils` inherits
+    from Exporter::Tiny.
+
+    Many of these tricks may seem familiar from Sub::Exporter. That is
+    intentional. Exporter::Tiny doesn't attempt to provide every feature of
+    Sub::Exporter, but where it does it usually uses a fairly similar API.
+
+  Basic importing
+       # import "frobnicate" function
+       use MyUtils "frobnicate";
+
+       # import all functions that MyUtils offers
+       use MyUtils -all;
+
+  Renaming imported functions
+       # call it "frob"
+       use MyUtils "frobnicate" => { -as => "frob" };
+
+       # call it "my_frobnicate"
+       use MyUtils "frobnicate" => { -prefix => "my_" };
+
+       # call it "frobnicate_util"
+       use MyUtils "frobnicate" => { -suffix => "_util" };
+
+       # import it twice with two different names
+       use MyUtils
+          "frobnicate" => { -as => "frob" },
+          "frobnicate" => { -as => "frbnct" };
+
+  Lexical subs
+       {
+          use Sub::Exporter::Lexical lexical_installer => { -as => "lex" };
+          use MyUtils { installer => lex }, "frobnicate";
+      
+          frobnicate(...);  # ok
+       }
+   
+       frobnicate(...);  # not ok
+
+  Import functions into another package
+       use MyUtils { into => "OtherPkg" }, "frobnicate";
+   
+       OtherPkg::frobincate(...);
+
+  Import functions into a scalar
+       my $func;
+       use MyUtils "frobnicate" => { -as => \$func };
+   
+       $func->(...);
+
+  Import functions into a hash
+    OK, Sub::Exporter doesn't do this...
+
+       my %funcs;
+       use MyUtils { into => \%funcs }, "frobnicate";
+   
+       $funcs{frobnicate}->(...);
+
+TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
+    Simple configuration works the same as Exporter; inherit from this module,
+    and use the @EXPORT, @EXPORT_OK and %EXPORT_TAGS package variables to list
+    subs to export.
+
+  Generators
+    Exporter::Tiny has always allowed exported subs to be generated (like
+    Sub::Exporter), but until version 0.025 did not have an especially nice
+    API for it.
+
+    Now, it's easy. If you want to generate a sub `foo` to export, list it in
+    @EXPORT or @EXPORT_OK as usual, and then simply give your exporter module
+    a class method called `_generate_foo`.
+
+       push @EXPORT_OK, 'foo';
+   
+       sub _generate_foo {
+          my $class = shift;
+          my ($name, $args, $globals) = @_;
+      
+          return sub {
+             ...;
+          }
+       }
+
+    You can also generate tags:
+
+       my %constants = (FOO => 1, BAR => 2);
+       use constant \%constants;
+   
+       $EXPORT_TAGS{constants} = sub {
+          my $class = shift;
+          my ($name, $args, $globals) = @_;
+      
+          return keys(%constants);
+       };
+
+  Overriding Internals
+    An important difference between Exporter and Exporter::Tiny is that the
+    latter calls all its internal functions as *class methods*. This means
+    that you subclass can *override them* to alter their behaviour.
+
+    The following methods are available to be overridden. Despite being named
+    with a leading underscore, they are considered public methods. (The
+    underscore is there to avoid accidentally colliding with any of your own
+    function names.)
+
+    `_exporter_validate_opts($globals)`
+        This method is called once each time `import` is called. It is passed
+        a reference to the global options hash. (That is, the optional leading
+        hashref in the `use` statement, where the `into` and `installer`
+        options can be provided.)
+
+        You may use this method to munge the global options, or validate them,
+        throwing an exception or printing a warning.
+
+        The default implementation does nothing interesting.
+
+    `_exporter_expand_tag($name, $args, $globals)`
+        This method is called to expand an import tag (e.g. ":constants"). It
+        is passed the tag name (minus the leading ":"), an optional hashref of
+        options (like `{ -prefix => "foo_" }`), and the global options
+        hashref.
+
+        It is expected to return a list of ($name, $args) arrayref pairs.
+        These names can be sub names to export, or further tag names (which
+        must have their ":"). If returning tag names, be careful to avoid
+        creating a tag expansion loop!
+
+        The default implementation uses %EXPORT_TAGS to expand tags, and
+        provides fallbacks for the `:default` and `:all` tags.
+
+    `_exporter_expand_sub($name, $args, $globals)`
+        This method is called to translate a sub name to a hash of name =>
+        coderef pairs for exporting to the caller. In general, this would just
+        be a hash with one key and one value, but, for example, Type::Library
+        overrides this method so that "+Foo" gets expanded to:
+
+           (
+              Foo         => sub { $type },
+              is_Foo      => sub { $type->check(@_) },
+              to_Foo      => sub { $type->assert_coerce(@_) },
+              assert_Foo  => sub { $type->assert_return(@_) },
+           )
+
+        The default implementation checks that the name is allowed to be
+        exported (using the `_exporter_permitted_regexp` method), gets the
+        coderef using the generator if there is one (or by calling `can` on
+        your exporter otherwise) and calls `_exporter_fail` if it's unable to
+        generate or retrieve a coderef.
+
+    `_exporter_permitted_regexp($globals)`
+        This method is called to retrieve a regexp for validating the names of
+        exportable subs. If a sub doesn't match the regexp, then the default
+        implementation of `_exporter_expand_sub` will refuse to export it. (Of
+        course, you may override the default `_exporter_expand_sub`.)
+
+        The default implementation of this method assembles the regexp from
+        @EXPORT and @EXPORT_OK.
+
+    `_exporter_fail($name, $args, $globals)`
+        Called by `_exporter_expand_sub` if it can't find a coderef to export.
+
+        The default implementation just throws an exception. But you could
+        emit a warning instead, or just ignore the failed export.
+
+        If you don't throw an exception then you should be aware that this
+        method is called in list context, and any list it returns will be
+        treated as an `_exporter_expand_sub`-style hash of names and coderefs
+        for export.
+
+    `_exporter_install_sub($name, $args, $globals, $coderef)`
+        This method actually installs the exported sub into its new
+        destination. Its return value is ignored.
+
+        The default implementation handles sub renaming (i.e. the `-as`,
+        `-prefix` and `-suffix` functions. This method does a lot of stuff; if
+        you need to override it, it's probably a good idea to just pre-process
+        the arguments and then call the super method rather than trying to
+        handle all of it yourself.
+
+HISTORY
+    Exporter::Tiny is a fork of Exporter::TypeTiny. CHOCOLATEBOY convinced me
+    that the Exporter from Type-Tiny was mature enough to live a life of its
+    own.
+
+    The two modules should stay fairly synchronized in terms of features, bug
+    fixes and so on.
+
+    See "HISTORY" in Exporter::TypeTiny for further history and rationale.
+
+OBLIGATORY EXPORTER COMPARISON
+    Exporter::Tiny offers almost all Sub::Exporter's features, but runs more
+    than twice as fast; uses less than half the memory and has no non-core
+    dependencies.
+
+    See "OBLIGATORY EXPORTER COMPARISON" in Exporter::TypeTiny details.
+
+BUGS
+    Please report any bugs to
+    <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>.
+
+SEE ALSO
+    Exporter::TypeTiny, Sub::Exporter, Exporter.
+
+AUTHOR
+    Toby Inkster <tobyink@cpan.org>.
+
+COPYRIGHT AND LICENCE
+    This software is copyright (c) 2013 by Toby Inkster.
+
+    This is free software; you can redistribute it and/or modify it under the
+    same terms as the Perl 5 programming language system itself.
+
+DISCLAIMER OF WARRANTIES
+    THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+    WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+    MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+

@@ -1,0 +1,78 @@
+@prefix dc:    <http://purl.org/dc/terms/> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix doap-changeset: <http://ontologi.es/doap-changeset#> .
+@prefix doap-deps: <http://ontologi.es/doap-deps#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dev.perl.org/licenses/>
+	dc:title             "the same terms as the perl 5 programming language system itself".
+
+<http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project>
+	a                    doap:Project;
+	dc:contributor       <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap-deps:develop-recommendation [ doap-deps:on "Dist::Inkt 0.001"^^doap-deps:CpanId ];
+	doap-deps:test-requirement [ doap-deps:on "Test::More 0.96"^^doap-deps:CpanId ];
+	doap:bug-database    <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>;
+	doap:created         "2013-09-05"^^xsd:date;
+	doap:developer       <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap:download-page   <https://metacpan.org/release/Exporter-Tiny>;
+	doap:homepage        <https://metacpan.org/release/Exporter-Tiny>;
+	doap:license         <http://dev.perl.org/licenses/>;
+	doap:maintainer      <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap:name            "Exporter-Tiny";
+	doap:programming-language "Perl";
+	doap:release         <http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/v_0-026>;
+	doap:repository      [
+		a doap:GitRepository;
+		doap:browse <https://github.com/tobyink/p5-type-tiny>;
+	];
+	doap:shortdesc       "an exporter with the features of Sub::Exporter but only core dependencies";
+	rdfs:seeAlso         <http://purl.org/NET/cpan-uri/dist/Type-Tiny/project>.
+
+<http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/v_0-026>
+	a                    doap:Version;
+	rdfs:label           "Initial release";
+	dc:identifier        "Exporter-Tiny-0.026"^^xsd:string;
+	dc:issued            "2013-09-05"^^xsd:date;
+	doap-changeset:changeset [
+		doap-changeset:item [
+			a doap-changeset:Packaging;
+			rdfs:label "Split Exporter::Tiny out from Exporter::TypeTiny.";
+			doap-changeset:thanks <http://purl.org/NET/cpan-uri/person/chocolateboy>;
+		];
+		doap-changeset:versus <http://purl.org/NET/cpan-uri/dist/Type-Tiny/v_0-026>;
+	];
+	doap-changeset:released-by <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap:file-release    <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.026.tar.gz>;
+	doap:revision        "0.026"^^xsd:string.
+
+<http://purl.org/NET/cpan-uri/dist/Type-Tiny/project>
+	a                    doap:Project;
+	dc:contributor       <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap:download-page   <https://metacpan.org/release/Type-Tiny>;
+	doap:homepage        <https://metacpan.org/release/Type-Tiny>;
+	doap:name            "Type-Tiny";
+	doap:programming-language "Perl";
+	doap:release         <http://purl.org/NET/cpan-uri/dist/Type-Tiny/v_0-026>.
+
+<http://purl.org/NET/cpan-uri/dist/Type-Tiny/v_0-026>
+	a                    doap:Version;
+	dc:identifier        "Type-Tiny-0.026"^^xsd:string;
+	doap-changeset:released-by <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap:file-release    <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/Type-Tiny-0.026.tar.gz>;
+	doap:revision        "0.026"^^xsd:string.
+
+<http://purl.org/NET/cpan-uri/person/chocolateboy>
+	a                    foaf:Person;
+	foaf:nick            "CHOCOLATEBOY";
+	foaf:page            <https://metacpan.org/author/CHOCOLATEBOY>.
+
+<http://purl.org/NET/cpan-uri/person/tobyink>
+	a                    foaf:Person;
+	foaf:mbox            <mailto:tobyink@cpan.org>;
+	foaf:name            "Toby Inkster";
+	foaf:nick            "TOBYINK";
+	foaf:page            <https://metacpan.org/author/TOBYINK>.
+
