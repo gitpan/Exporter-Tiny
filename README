@@ -140,7 +140,7 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
   Overriding Internals
     An important difference between Exporter and Exporter::Tiny is that the
     latter calls all its internal functions as *class methods*. This means
-    that you subclass can *override them* to alter their behaviour.
+    that your subclass can *override them* to alter their behaviour.
 
     The following methods are available to be overridden. Despite being named
     with a leading underscore, they are considered public methods. (The
@@ -222,21 +222,78 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
         handle all of it yourself.
 
 HISTORY
-    Exporter::Tiny is a fork of Exporter::TypeTiny. CHOCOLATEBOY convinced me
-    that the Exporter from Type-Tiny was mature enough to live a life of its
-    own.
+    Type::Library had a bunch of custom exporting code which poked coderefs
+    into its caller's stash. It needed this to be something more powerful than
+    most exporters so that it could switch between exporting Moose, Mouse and
+    Moo-compatible objects on request. Sub::Exporter would have been capable,
+    but had too many dependencies for the Type::Tiny project.
 
-    The two modules should stay fairly synchronized in terms of features, bug
-    fixes and so on.
+    Meanwhile Type::Utils, Types::TypeTiny and Test::TypeTiny each used the
+    venerable Exporter.pm. However, this meant they were unable to use the
+    features like Sub::Exporter-style function renaming which I'd built into
+    Type::Library:
 
-    See "HISTORY" in Exporter::TypeTiny for further history and rationale.
+       ## import "Str" but rename it to "String".
+       use Types::Standard "Str" => { -as => "String" };
+
+    And so I decided to factor out code that could be shared by all
+    Type-Tiny's exporters into a single place: Exporter::TypeTiny.
+
+    As of version 0.026, Exporter::TypeTiny was also made available as
+    Exporter::Tiny, distributed independently on CPAN. CHOCOLATEBOY had
+    convinced me that it was mature enough to live a life of its own.
+
+    As of version 0.030, Type-Tiny depends on Exporter::Tiny and
+    Exporter::TypeTiny is being phased out.
 
 OBLIGATORY EXPORTER COMPARISON
-    Exporter::Tiny offers almost all Sub::Exporter's features, but runs more
-    than twice as fast; uses less than half the memory and has no non-core
-    dependencies.
+    Exporting is unlikely to be your application's performance bottleneck, but
+    nonetheless here are some comparisons.
 
-    See "OBLIGATORY EXPORTER COMPARISON" in Exporter::TypeTiny details.
+    Comparative sizes according to Devel::SizeMe:
+
+       Exporter                     217.1Kb
+       Sub::Exporter::Progressive   263.2Kb
+       Exporter::Tiny               267.7Kb
+       Exporter + Exporter::Heavy   281.5Kb
+       Exporter::Renaming           406.2Kb
+       Sub::Exporter                701.0Kb
+
+    Performance exporting a single sub:
+
+                  Rate     SubExp    ExpTiny SubExpProg      ExpPM
+    SubExp      2489/s         --       -56%       -85%       -88%
+    ExpTiny     5635/s       126%         --       -67%       -72%
+    SubExpProg 16905/s       579%       200%         --       -16%
+    ExpPM      20097/s       707%       257%        19%         --
+
+    (Exporter::Renaming globally changes the behaviour of Exporter.pm, so
+    could not be included in the same benchmarks.)
+
+    (Non-Core) Dependencies:
+
+       Exporter                    -1
+       Exporter::Renaming           0
+       Exporter::Tiny               0
+       Sub::Exporter::Progressive   0
+       Sub::Exporter                3
+
+    Features:
+
+                                          ExpPM   ExpTiny SubExp  SubExpProg
+     Can export code symbols............. Yes     Yes     Yes     Yes      
+     Can export non-code symbols......... Yes                              
+     Groups/tags......................... Yes     Yes     Yes     Yes      
+     Config avoids package variables.....                 Yes              
+     Allows renaming of subs.............         Yes     Yes     Maybe    
+     Install code into scalar refs.......         Yes     Yes     Maybe    
+     Can be passed an "into" parameter...         Yes     Yes     Maybe    
+     Can be passed an "installer" sub....         Yes     Yes     Maybe    
+     Supports generators.................         Yes     Yes              
+     Sane API for generators.............         Yes     Yes
+
+    (Certain Sub::Exporter::Progressive features are only available if
+    Sub::Exporter is installed.)
 
 BUGS
     Please report any bugs to

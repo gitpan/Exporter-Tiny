@@ -4,10 +4,10 @@
       "Toby Inkster (TOBYINK) <tobyink@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Inkt::Profile::TOBYINK version 0.007, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Inkt::Profile::TOBYINK version 0.013, CPAN::Meta::Converter version 2.120921",
    "keywords" : [],
    "license" : [
-      "perl"
+      "perl_5"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
@@ -23,6 +23,7 @@
          "xt"
       ]
    },
+   "optional_features" : {},
    "prereqs" : {
       "configure" : {
          "requires" : {
@@ -43,10 +44,10 @@
    "provides" : {
       "Exporter::Tiny" : {
          "file" : "lib/Exporter/Tiny.pm",
-         "version" : "0.026"
+         "version" : "0.029_01"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "X_identifier" : "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
       "bugtracker" : {
@@ -58,9 +59,8 @@
       ],
       "repository" : {
          "type" : "git",
-         "web" : "https://github.com/tobyink/p5-type-tiny"
+         "web" : "https://github.com/tobyink/p5-exporter-tiny"
       }
    },
-   "version" : "0.026",
-   "x_provides_scripts" : {}
+   "version" : "0.029_01"
 }

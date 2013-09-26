@@ -5,7 +5,7 @@ use strict;
 use warnings; no warnings qw(void once uninitialized numeric redefine);
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.026';
+our $VERSION   = '0.029_01';
 our @EXPORT_OK = qw< mkopt mkopt_hash _croak >;
 
 sub _croak ($;@) { require Carp; my $fmt = shift; @_ = sprintf($fmt, @_); goto \&Carp::croak }
@@ -362,7 +362,7 @@ You can also generate tags:
 
 An important difference between L<Exporter> and Exporter::Tiny is that
 the latter calls all its internal functions as I<< class methods >>. This
-means that you subclass can I<< override them >> to alter their behaviour.
+means that your subclass can I<< override them >> to alter their behaviour.
 
 The following methods are available to be overridden. Despite being named
 with a leading underscore, they are considered public methods. (The underscore
@@ -401,8 +401,8 @@ provides fallbacks for the C<< :default >> and C<< :all >> tags.
 
 This method is called to translate a sub name to a hash of name => coderef
 pairs for exporting to the caller. In general, this would just be a hash with
-one key and one value, but, for example, Type::Library overrides this method
-so that C<< "+Foo" >> gets expanded to:
+one key and one value, but, for example, L<Type::Library> overrides this
+method so that C<< "+Foo" >> gets expanded to:
 
    (
       Foo         => sub { $type },
@@ -454,22 +454,79 @@ trying to handle all of it yourself.
 
 =head1 HISTORY
 
-Exporter::Tiny is a fork of L<Exporter::TypeTiny>. CHOCOLATEBOY convinced
-me that the Exporter from Type-Tiny was mature enough to live a life of its
-own.
+L<Type::Library> had a bunch of custom exporting code which poked coderefs
+into its caller's stash. It needed this to be something more powerful than
+most exporters so that it could switch between exporting Moose, Mouse and
+Moo-compatible objects on request. L<Sub::Exporter> would have been capable,
+but had too many dependencies for the Type::Tiny project.
 
-The two modules should stay fairly synchronized in terms of features,
-bug fixes and so on.
+Meanwhile L<Type::Utils>, L<Types::TypeTiny> and L<Test::TypeTiny> each
+used the venerable L<Exporter.pm|Exporter>. However, this meant they were
+unable to use the features like L<Sub::Exporter>-style function renaming
+which I'd built into Type::Library:
 
-See L<Exporter::TypeTiny/HISTORY> for further history and rationale.
+   ## import "Str" but rename it to "String".
+   use Types::Standard "Str" => { -as => "String" };
+
+And so I decided to factor out code that could be shared by all Type-Tiny's
+exporters into a single place: L<Exporter::TypeTiny>.
+
+As of version 0.026, L<Exporter::TypeTiny> was also made available as
+L<Exporter::Tiny>, distributed independently on CPAN. CHOCOLATEBOY had
+convinced me that it was mature enough to live a life of its own.
+
+As of version 0.030, Type-Tiny depends on Exporter::Tiny and
+L<Exporter::TypeTiny> is being phased out.
 
 =head1 OBLIGATORY EXPORTER COMPARISON
 
-Exporter::Tiny offers almost all Sub::Exporter's features, but runs more
-than twice as fast; uses less than half the memory and has no non-core
-dependencies.
+Exporting is unlikely to be your application's performance bottleneck, but
+nonetheless here are some comparisons.
 
-See L<Exporter::TypeTiny/OBLIGATORY EXPORTER COMPARISON> details.
+B<< Comparative sizes according to L<Devel::SizeMe>: >>
+
+   Exporter                     217.1Kb
+   Sub::Exporter::Progressive   263.2Kb
+   Exporter::Tiny               267.7Kb
+   Exporter + Exporter::Heavy   281.5Kb
+   Exporter::Renaming           406.2Kb
+   Sub::Exporter                701.0Kb
+
+B<< Performance exporting a single sub: >>
+
+              Rate     SubExp    ExpTiny SubExpProg      ExpPM
+SubExp      2489/s         --       -56%       -85%       -88%
+ExpTiny     5635/s       126%         --       -67%       -72%
+SubExpProg 16905/s       579%       200%         --       -16%
+ExpPM      20097/s       707%       257%        19%         --
+
+(Exporter::Renaming globally changes the behaviour of Exporter.pm, so could
+not be included in the same benchmarks.)
+
+B<< (Non-Core) Dependencies: >>
+
+   Exporter                    -1
+   Exporter::Renaming           0
+   Exporter::Tiny               0
+   Sub::Exporter::Progressive   0
+   Sub::Exporter                3
+
+B<< Features: >>
+
+                                      ExpPM   ExpTiny SubExp  SubExpProg
+ Can export code symbols............. Yes     Yes     Yes     Yes      
+ Can export non-code symbols......... Yes                              
+ Groups/tags......................... Yes     Yes     Yes     Yes      
+ Config avoids package variables.....                 Yes              
+ Allows renaming of subs.............         Yes     Yes     Maybe    
+ Install code into scalar refs.......         Yes     Yes     Maybe    
+ Can be passed an "into" parameter...         Yes     Yes     Maybe    
+ Can be passed an "installer" sub....         Yes     Yes     Maybe    
+ Supports generators.................         Yes     Yes              
+ Sane API for generators.............         Yes     Yes              
+
+(Certain Sub::Exporter::Progressive features are only available if
+Sub::Exporter is installed.)
 
 =head1 BUGS
 
