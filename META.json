@@ -37,17 +37,17 @@
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.96"
+            "Test::More" : "0.47"
          }
       }
    },
    "provides" : {
       "Exporter::Tiny" : {
          "file" : "lib/Exporter/Tiny.pm",
-         "version" : "0.030"
+         "version" : "0.031_01"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "X_identifier" : "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
       "bugtracker" : {
@@ -62,5 +62,5 @@
          "web" : "https://github.com/tobyink/p5-exporter-tiny"
       }
    },
-   "version" : "0.030"
+   "version" : "0.031_01"
 }

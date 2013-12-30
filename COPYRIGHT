@@ -3,15 +3,6 @@ Upstream-Name: Exporter-Tiny
 Upstream-Contact: Toby Inkster (TOBYINK) <tobyink@cpan.org>
 Source: https://metacpan.org/release/Exporter-Tiny
 
-Files: README
- lib/Exporter/Tiny.pm
- t/01basic.t
- t/02renaming.t
- t/03generators.t
- t/04into.t
-Copyright: This software is copyright (c) 2013 by Toby Inkster.
-License: GPL-1.0+ or Artistic-1.0
-
 Files: Changes
  META.json
  META.yml
@@ -19,6 +10,15 @@ Files: Changes
  dist.ini
  doap.ttl
 Copyright: Copyright 2013 Toby Inkster.
+License: GPL-1.0+ or Artistic-1.0
+
+Files: README
+ lib/Exporter/Tiny.pm
+ t/01basic.t
+ t/02renaming.t
+ t/03generators.t
+ t/04into.t
+Copyright: This software is copyright (c) 2013 by Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
 Files: CONTRIBUTING

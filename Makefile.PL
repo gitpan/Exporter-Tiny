@@ -19,12 +19,12 @@ my $meta = {
   "prereqs"        => {
                         configure => { requires => { "ExtUtils::MakeMaker" => 6.17 } },
                         develop => { recommends => { "Dist::Inkt" => 0.001 } },
-                        test => { requires => { "Test::More" => 0.96 } },
+                        test => { requires => { "Test::More" => 0.47 } },
                       },
   "provides"       => {
-                        "Exporter::Tiny" => { file => "lib/Exporter/Tiny.pm", version => "0.030" },
+                        "Exporter::Tiny" => { file => "lib/Exporter/Tiny.pm", version => "0.031_01" },
                       },
-  "release_status" => "stable",
+  "release_status" => "testing",
   "resources"      => {
                         bugtracker   => {
                                           web => "http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny",
@@ -34,7 +34,7 @@ my $meta = {
                         repository   => { type => "git", web => "https://github.com/tobyink/p5-exporter-tiny" },
                         X_identifier => "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
                       },
-  "version"        => "0.030",
+  "version"        => "0.031_01",
 };
 
 my %dynamic_config;
