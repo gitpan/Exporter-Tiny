@@ -23,13 +23,16 @@ no_index:
     - xt
 optional_features: {}
 provides:
+  Exporter::Shiny:
+    file: lib/Exporter/Shiny.pm
+    version: 0.033_01
   Exporter::Tiny:
     file: lib/Exporter/Tiny.pm
-    version: 0.032
+    version: 0.033_01
 resources:
   X_identifier: http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project
   bugtracker: http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny
   homepage: https://metacpan.org/release/Exporter-Tiny
   license: http://dev.perl.org/licenses/
   repository: https://github.com/tobyink/p5-exporter-tiny
-version: 0.032
+version: 0.033_01

@@ -13,8 +13,10 @@ SIGNATURE
 dist.ini
 doap.ttl
 examples/Example/Exporter.pm
+lib/Exporter/Shiny.pm
 lib/Exporter/Tiny.pm
 t/01basic.t
 t/02renaming.t
 t/03generators.t
 t/04into.t
+t/05shiny.t
