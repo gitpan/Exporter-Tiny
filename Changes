@@ -6,6 +6,8 @@ Home page:    <https://metacpan.org/release/Exporter-Tiny>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>
 Maintainer:   Toby Inkster (TOBYINK) <tobyink@cpan.org>
 
+0.034	2014-01-19
+
 0.033_01	2014-01-19
 
  - Added: Add a new wrapper module called Exporter::Shiny.

@@ -304,7 +304,7 @@ SUPPORT
     <http://www.irc.perl.org/channels.html>.
 
 SEE ALSO
-    Exporter::TypeTiny, Sub::Exporter, Exporter.
+    Exporter::Shiny, Sub::Exporter, Exporter.
 
 AUTHOR
     Toby Inkster <tobyink@cpan.org>.

@@ -30,14 +30,14 @@ Files: COPYRIGHT
 Copyright: None
 License: public-domain
 
-Files: README
- lib/Exporter/Tiny.pm
-Copyright: This software is copyright (c) 2013-2014 by Toby Inkster.
-License: GPL-1.0+ or Artistic-1.0
-
 Files: Makefile.PL
  dist.ini
 Copyright: Copyright 2013 Toby Inkster.
+License: GPL-1.0+ or Artistic-1.0
+
+Files: README
+ lib/Exporter/Tiny.pm
+Copyright: This software is copyright (c) 2013-2014 by Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
 Files: lib/Exporter/Shiny.pm
