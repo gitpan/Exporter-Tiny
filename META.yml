@@ -25,10 +25,10 @@ optional_features: {}
 provides:
   Exporter::Shiny:
     file: lib/Exporter/Shiny.pm
-    version: 0.035_01
+    version: 0.035_02
   Exporter::Tiny:
     file: lib/Exporter/Tiny.pm
-    version: 0.035_01
+    version: 0.035_02
 requires:
   perl: 5.006001
 resources:
@@ -37,4 +37,4 @@ resources:
   homepage: https://metacpan.org/release/Exporter-Tiny
   license: http://dev.perl.org/licenses/
   repository: https://github.com/tobyink/p5-exporter-tiny
-version: 0.035_01
+version: 0.035_02

@@ -6,6 +6,14 @@ Home page:    <https://metacpan.org/release/Exporter-Tiny>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>
 Maintainer:   Toby Inkster (TOBYINK) <tobyink@cpan.org>
 
+0.035_02	2014-03-01
+
+ [ Documentation ]
+ - Document exactly what Exporter::Shiny is supposed to do.
+
+ [ Test Suite ]
+ - Make t/02renaming.t less noisy.
+
 0.035_01	2014-03-01
 
  [ Packaging ]

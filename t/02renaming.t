@@ -23,23 +23,25 @@ use strict;
 use warnings;
 use Test::More tests => 6;
 
+BEGIN { *note = *diag unless __PACKAGE__->can("note") };
+
 use lib qw( examples ../examples );
 
-diag "Rename functions using -as"; do {
+note "Rename functions using -as"; do {
 	package Local::AAA;
 	use Example::Exporter fib => { -as => 'fibonacci' };
 	::is fibonacci(6), 8, 'Correctly imported "fibonacci" from Example::Exporter';
 	::ok !__PACKAGE__->can('fib'), 'Did not inadvertantly import "fib"';
 };
 
-diag "Rename functions using -prefix"; do {
+note "Rename functions using -prefix"; do {
 	package Local::BBB;
 	use Example::Exporter fib => { -prefix => 'my' };
 	::is myfib(6), 8, 'Correctly imported "myfib" from Example::Exporter';
 	::ok !__PACKAGE__->can('fib'), 'Did not inadvertantly import "fib"';
 };
 
-diag "Rename functions using -suffix"; do {
+note "Rename functions using -suffix"; do {
 	package Local::CCC;
 	use Example::Exporter fib => { -suffix => 'onacci' };
 	::is fibonacci(6), 8, 'Correctly imported "fibonacci" from Example::Exporter';
