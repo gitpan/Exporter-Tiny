@@ -7,7 +7,7 @@ my $meta = {
   "abstract"       => "an exporter with the features of Sub::Exporter but only core dependencies",
   "author"         => ["Toby Inkster (TOBYINK) <tobyink\@cpan.org>"],
   "dynamic_config" => 0,
-  "generated_by"   => "Dist::Inkt::Profile::TOBYINK version 0.013, CPAN::Meta::Converter version 2.120921",
+  "generated_by"   => "Dist::Inkt::Profile::TOBYINK version 0.014, CPAN::Meta::Converter version 2.120921",
   "keywords"       => [],
   "license"        => ["perl_5"],
   "meta-spec"      => {
@@ -18,14 +18,15 @@ my $meta = {
   "no_index"       => { directory => ["eg", "examples", "inc", "t", "xt"] },
   "prereqs"        => {
                         configure => { requires => { "ExtUtils::MakeMaker" => 6.17 } },
-                        develop => { recommends => { "Dist::Inkt" => 0.001 } },
-                        test => { requires => { "Test::More" => 0.47 } },
+                        develop   => { recommends => { "Dist::Inkt" => 0.001 } },
+                        runtime   => { requires => { perl => 5.006001 } },
+                        test      => { requires => { "Test::More" => 0.47 } },
                       },
   "provides"       => {
-                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => 0.034 },
-                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => 0.034 },
+                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => "0.035_01" },
+                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => "0.035_01" },
                       },
-  "release_status" => "stable",
+  "release_status" => "testing",
   "resources"      => {
                         bugtracker   => {
                                           web => "http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny",
@@ -35,7 +36,7 @@ my $meta = {
                         repository   => { type => "git", web => "https://github.com/tobyink/p5-exporter-tiny" },
                         X_identifier => "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
                       },
-  "version"        => 0.034,
+  "version"        => "0.035_01",
 };
 
 my %dynamic_config;
@@ -47,6 +48,7 @@ my %WriteMakefileArgs = (
 	VERSION    => $meta->{version},
 	EXE_FILES  => [ map $_->{file}, values %{ $meta->{x_provides_scripts} || {} } ],
 	NAME       => do { my $n = $meta->{name}; $n =~ s/-/::/g; $n },
+	test       => { TESTS => "t/*.t" },
 	%dynamic_config,
 );
 

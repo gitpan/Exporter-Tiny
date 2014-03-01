@@ -6,6 +6,11 @@ Home page:    <https://metacpan.org/release/Exporter-Tiny>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>
 Maintainer:   Toby Inkster (TOBYINK) <tobyink@cpan.org>
 
+0.035_01	2014-03-01
+
+ [ Packaging ]
+ - Explicitly list minimum Perl version: 5.6.1.
+
 0.034	2014-01-19
 
 0.033_01	2014-01-19
