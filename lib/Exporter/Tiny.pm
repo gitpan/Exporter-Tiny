@@ -5,7 +5,7 @@ use strict;
 use warnings; no warnings qw(void once uninitialized numeric redefine);
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.036';
+our $VERSION   = '0.037_01';
 our @EXPORT_OK = qw< mkopt mkopt_hash _croak >;
 
 sub _croak ($;@) { require Carp; my $fmt = shift; @_ = sprintf($fmt, @_); goto \&Carp::croak }
@@ -17,17 +17,29 @@ sub import
 	my @args        = do { no strict qw(refs); @_ ? @_ : @{"$class\::EXPORT"} };
 	my $opts        = mkopt(\@args);
 	
-	$global_opts->{into} = caller unless exists $global_opts->{into};
 	my @want;
+	my %not_want;
+	$global_opts->{into} = caller unless exists $global_opts->{into};
+	$global_opts->{not}  = \%not_want;
 	
 	while (@$opts)
 	{
 		my $opt = shift @{$opts};
 		my ($name, $value) = @$opt;
 		
-		$name =~ /^[:-](.+)$/
-			? push(@$opts, $class->_exporter_expand_tag($1, $value, $global_opts))
-			: push(@want, $opt);
+		($name =~ m{\A\!(/.+/[msixpodual]+)\z}) ?
+			do {
+				my @not = $class->_exporter_expand_regexp($1, $value, $global_opts);
+				++$not_want{$_->[0]} for @not;
+			} :
+		($name =~ m{\A\!(.+)\z}) ?
+			(++$not_want{$1}) :
+		($name =~ m{\A[:-](.+)\z}) ?
+			push(@$opts, $class->_exporter_expand_tag($1, $value, $global_opts)) :
+		($name =~ m{\A/.+/[msixpodual]+\z}) ?
+			push(@$opts, $class->_exporter_expand_regexp($name, $value, $global_opts)) :
+		# else ?
+			push(@want, $opt);
 	}
 	
 	$class->_exporter_validate_opts($global_opts);
@@ -35,6 +47,8 @@ sub import
 	
 	for my $wanted (@want)
 	{
+		next if $not_want{$wanted->[0]};
+		
 		my %symbols = $class->_exporter_expand_sub(@$wanted, $global_opts, $permitted);
 		$class->_exporter_install_sub($_, $wanted->[1], $global_opts, $symbols{$_})
 			for keys %symbols;
@@ -77,6 +91,20 @@ sub _exporter_expand_tag
 	
 	$globals->{$name} = $value || 1;
 	return;
+}
+
+# Given a regexp-like string, looks it up in @EXPORT_OK and returns the
+# list of matching functions.
+# 
+sub _exporter_expand_regexp
+{
+	no strict qw(refs);
+	
+	my $class = shift;
+	my ($name, $value, $globals) = @_;
+	my $compiled = eval("qr$name");
+	
+	map [$_ => $value], grep /$compiled/, @{"$class\::EXPORT_OK"};
 }
 
 # Helper for _exporter_expand_sub. Returns a regexp matching all subs in
@@ -200,6 +228,8 @@ __END__
 
 =encoding utf-8
 
+=for stopwords frobnicate greps regexps
+
 =head1 NAME
 
 Exporter::Tiny - an exporter with the features of Sub::Exporter but only core dependencies
@@ -319,6 +349,30 @@ OK, Sub::Exporter doesn't do this...
    
    $funcs{frobnicate}->(...);
 
+=head2 DO NOT WANT!
+
+This imports everything except "frobnicate":
+
+   use MyUtils qw( -all !frobnicate );
+
+Negated imports always "win", so the following will not import
+"frobnicate", no matter how many times you repeat it...
+
+   use MyUtils qw( !frobnicate frobnicate frobnicate frobnicate );
+
+=head2 Importing by regexp
+
+Here's how you could import all functions beginning with an "f":
+
+   use MyUtils qw( /^F/i );
+
+Or import everything except functions beginning with a "z":
+
+   use MyUtils qw( -all !/^Z/i );
+
+Note that regexps are always supplied as I<strings> starting with
+C<< "/" >>, and not as quoted regexp references (C<< qr/.../ >>).
+
 =head1 TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
 
 Simple configuration works the same as L<Exporter>; inherit from this module,
@@ -348,7 +402,10 @@ exporter module a class method called C<< _generate_foo >>.
 
 You can also generate tags:
 
-   my %constants = (FOO => 1, BAR => 2);
+   my %constants;
+   BEGIN {
+      %constants = (FOO => 1, BAR => 2);
+   }
    use constant \%constants;
    
    $EXPORT_TAGS{constants} = sub {
@@ -396,6 +453,13 @@ expansion loop!
 
 The default implementation uses C<< %EXPORT_TAGS >> to expand tags, and
 provides fallbacks for the C<< :default >> and C<< :all >> tags.
+
+=item C<< _exporter_expand_regexp($regexp, $args, $globals) >>
+
+Like C<_exporter_expand_regexp>, but given a regexp-like string instead
+of a tag name.
+
+The default implementation greps through C<< @EXPORT_OK >>.
 
 =item C<< _exporter_expand_sub($name, $args, $globals) >>
 

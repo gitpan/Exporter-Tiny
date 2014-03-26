@@ -20,3 +20,5 @@ t/02renaming.t
 t/03generators.t
 t/04into.t
 t/05shiny.t
+t/06notwant.t
+t/07regexp.t
