@@ -22,3 +22,4 @@ t/04into.t
 t/05shiny.t
 t/06notwant.t
 t/07regexp.t
+t/08tags.t

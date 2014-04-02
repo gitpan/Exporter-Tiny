@@ -7,7 +7,15 @@ Files: lib/Exporter/Shiny.pm
  t/05shiny.t
  t/06notwant.t
  t/07regexp.t
+ t/08tags.t
 Copyright: This software is copyright (c) 2014 by Toby Inkster.
+License: GPL-1.0+ or Artistic-1.0
+
+Files: Changes
+ META.json
+ META.yml
+ doap.ttl
+Copyright: Copyright 2014 Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
 Files: CONTRIBUTING
@@ -22,13 +30,6 @@ Files: t/01basic.t
  t/03generators.t
  t/04into.t
 Copyright: This software is copyright (c) 2013 by Toby Inkster.
-License: GPL-1.0+ or Artistic-1.0
-
-Files: Changes
- META.json
- META.yml
- doap.ttl
-Copyright: Copyright 2014 Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
 Files: COPYRIGHT

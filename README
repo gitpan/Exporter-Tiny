@@ -183,6 +183,11 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
 
         The default implementation does nothing interesting.
 
+        item `_exporter_merge_opts($tag_opts, $globals, @exports)`
+
+        Called to merge options which have been provided for a tag into the
+        options provided for the exports that the tag expanded to.
+
     `_exporter_expand_tag($name, $args, $globals)`
         This method is called to expand an import tag (e.g. ":constants"). It
         is passed the tag name (minus the leading ":"), an optional hashref of

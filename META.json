@@ -49,11 +49,11 @@
    "provides" : {
       "Exporter::Shiny" : {
          "file" : "lib/Exporter/Shiny.pm",
-         "version" : "0.037_01"
+         "version" : "0.037_02"
       },
       "Exporter::Tiny" : {
          "file" : "lib/Exporter/Tiny.pm",
-         "version" : "0.037_01"
+         "version" : "0.037_02"
       }
    },
    "release_status" : "testing",
@@ -72,5 +72,5 @@
          "web" : "https://github.com/tobyink/p5-exporter-tiny"
       }
    },
-   "version" : "0.037_01"
+   "version" : "0.037_02"
 }
