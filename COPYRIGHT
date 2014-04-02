@@ -11,19 +11,19 @@ Files: lib/Exporter/Shiny.pm
 Copyright: This software is copyright (c) 2014 by Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
-Files: Changes
- META.json
- META.yml
- doap.ttl
-Copyright: Copyright 2014 Toby Inkster.
-License: GPL-1.0+ or Artistic-1.0
-
 Files: CONTRIBUTING
  INSTALL
  LICENSE
  examples/Example/Exporter.pm
 Copyright: Unknown
 License: Unknown
+
+Files: Changes
+ META.json
+ META.yml
+ doap.ttl
+Copyright: Copyright 2014 Toby Inkster.
+License: GPL-1.0+ or Artistic-1.0
 
 Files: t/01basic.t
  t/02renaming.t

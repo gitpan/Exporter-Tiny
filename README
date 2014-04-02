@@ -183,8 +183,7 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
 
         The default implementation does nothing interesting.
 
-        item `_exporter_merge_opts($tag_opts, $globals, @exports)`
-
+    `_exporter_merge_opts($tag_opts, $globals, @exports)`
         Called to merge options which have been provided for a tag into the
         options provided for the exports that the tag expanded to.
 

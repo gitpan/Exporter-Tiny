@@ -6,6 +6,11 @@ Home page:    <https://metacpan.org/release/Exporter-Tiny>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>
 Maintainer:   Toby Inkster (TOBYINK) <tobyink@cpan.org>
 
+0.037_03	2014-04-02
+
+ [ Bug Fixes ]
+ - Only attempt to merge hashes if we're sure they're both really hashes!
+
 0.037_02	2014-04-02
 
  - Improved handling of hashrefs of options passed to tags, and hashrefs of
