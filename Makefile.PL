@@ -23,10 +23,10 @@ my $meta = {
                         test      => { requires => { "Test::More" => 0.47 } },
                       },
   "provides"       => {
-                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => "0.037_03" },
-                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => "0.037_03" },
+                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => 0.038 },
+                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => 0.038 },
                       },
-  "release_status" => "testing",
+  "release_status" => "stable",
   "resources"      => {
                         bugtracker   => {
                                           web => "http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny",
@@ -40,7 +40,7 @@ my $meta = {
                                         },
                         X_identifier => "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
                       },
-  "version"        => "0.037_03",
+  "version"        => 0.038,
 };
 
 my %dynamic_config;
