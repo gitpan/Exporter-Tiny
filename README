@@ -63,8 +63,14 @@ TIPS AND TRICKS IMPORTING FROM EXPORTER::TINY
        # call it "my_frobnicate"
        use MyUtils "frobnicate" => { -prefix => "my_" };
 
+       # can set a prefix for *all* functions imported from MyUtils
+       # by placing the options hashref *first*.
+       use MyUtils { prefix => "my_" }, "frobnicate";
+       # (note the lack of hyphen before `prefix`.)
+
        # call it "frobnicate_util"
        use MyUtils "frobnicate" => { -suffix => "_util" };
+       use MyUtils { suffix => "_util" }, "frobnicate";
 
        # import it twice with two different names
        use MyUtils
@@ -255,6 +261,31 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
         you need to override it, it's probably a good idea to just pre-process
         the arguments and then call the super method rather than trying to
         handle all of it yourself.
+
+DIAGNOSTICS
+    Overwriting existing sub '%s::%s' with sub '%s' exported by %s
+        A warning issued if Exporter::Tiny is asked to export a symbol which
+        will result in an existing sub being overwritten. This warning can be
+        suppressed using either of the following:
+
+           use MyUtils { replace => 1 }, "frobnicate";
+           use MyUtils "frobnicate" => { -replace => 1 };
+
+        Or can be upgraded to a fatal error:
+
+           use MyUtils { replace => "die" }, "frobnicate";
+           use MyUtils "frobnicate" => { -replace => "die" };
+
+    Refusing to overwrite existing sub '%s::%s' with sub '%s' exported by %s
+        The fatal version of the above warning.
+
+    Could not find sub '%s' exported by %s
+        You requested to import a sub which the package does not provide.
+
+    Cannot provide an -as option for tags
+        Because a tag may provide more than one function, it does not make
+        sense to request a single name for it. Instead use `-prefix` or
+        `-suffix`.
 
 HISTORY
     Type::Library had a bunch of custom exporting code which poked coderefs

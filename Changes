@@ -6,6 +6,17 @@ Home page:    <https://metacpan.org/release/Exporter-Tiny>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>
 Maintainer:   Toby Inkster (TOBYINK) <tobyink@cpan.org>
 
+0.039_01	2014-07-20
+
+ [ Documentation ]
+ - Document warning and error messages produced by Exporter::Tiny.
+
+ [ Other ]
+ - Exporter::Tiny would previously cause B.pm to be loaded into memory any
+   time it exported anything. It no longer does.
+ - No longer die when redefining locally defined subs.
+ - Warn when redefining any subs.
+
 0.038	2014-04-04
 
 0.037_03	2014-04-02
