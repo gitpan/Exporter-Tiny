@@ -6,6 +6,11 @@ Home page:    <https://metacpan.org/release/Exporter-Tiny>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny>
 Maintainer:   Toby Inkster (TOBYINK) <tobyink@cpan.org>
 
+0.040	2014-09-17
+
+ [ Packaging ]
+ - Repackage as a stable release.
+
 0.039_01	2014-07-20
 
  [ Documentation ]

@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Exporter-Tiny
-Upstream-Contact:  and Toby Inkster (TOBYINK) <tobyink@cpan.org>
+Upstream-Contact: Toby Inkster (TOBYINK) <tobyink@cpan.org>
 Source: https://metacpan.org/release/Exporter-Tiny
 
 Files: lib/Exporter/Shiny.pm
@@ -10,13 +10,6 @@ Files: lib/Exporter/Shiny.pm
  t/08tags.t
  t/09warnings.t
 Copyright: This software is copyright (c) 2014 by Toby Inkster.
-License: GPL-1.0+ or Artistic-1.0
-
-Files: Changes
- META.json
- META.yml
- doap.ttl
-Copyright: Copyright 2014 Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
 Files: t/01basic.t
@@ -33,20 +26,27 @@ Files: CONTRIBUTING
 Copyright: Unknown
 License: Unknown
 
+Files: Changes
+ META.json
+ META.yml
+ doap.ttl
+Copyright: Copyright 2014 Toby Inkster.
+License: GPL-1.0+ or Artistic-1.0
+
 Files: COPYRIGHT
  CREDITS
  SIGNATURE
 Copyright: None
 License: public-domain
 
-Files: README
- lib/Exporter/Tiny.pm
-Copyright: This software is copyright (c) 2013-2014 by Toby Inkster.
-License: GPL-1.0+ or Artistic-1.0
-
 Files: Makefile.PL
  dist.ini
 Copyright: Copyright 2013 Toby Inkster.
+License: GPL-1.0+ or Artistic-1.0
+
+Files: README
+ lib/Exporter/Tiny.pm
+Copyright: This software is copyright (c) 2013-2014 by Toby Inkster.
 License: GPL-1.0+ or Artistic-1.0
 
 License: Artistic-1.0
