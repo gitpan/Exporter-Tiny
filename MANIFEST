@@ -24,3 +24,4 @@ t/06notwant.t
 t/07regexp.t
 t/08tags.t
 t/09warnings.t
+t/10no.t

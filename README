@@ -128,6 +128,24 @@ TIPS AND TRICKS IMPORTING FROM EXPORTER::TINY
     Note that regexps are always supplied as *strings* starting with "/", and
     not as quoted regexp references (`qr/.../`).
 
+  Unimporting
+    You can unimport the functions that MyUtils added to your namespace:
+
+       no MyUtils;
+
+    Or just specific ones:
+
+       no MyUtils qw(frobnicate);
+
+    If you renamed a function when you imported it, you should unimport by the
+    new name:
+
+       use MyUtils frobnicate => { -as => "frob" };
+       ...;
+       no MyUtils "frob";
+
+    Unimporting using tags and regexps should mostly do what you want.
+
 TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
     Simple configuration works the same as Exporter; inherit from this module,
     and use the @EXPORT, @EXPORT_OK and %EXPORT_TAGS package variables to list
@@ -189,6 +207,9 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
 
         The default implementation does nothing interesting.
 
+    `_exporter_validate_unimport_opts($globals)`
+        Like `_exporter_validate_opts`, but called for `unimport`.
+
     `_exporter_merge_opts($tag_opts, $globals, @exports)`
         Called to merge options which have been provided for a tag into the
         options provided for the exports that the tag expanded to.
@@ -211,7 +232,8 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
         Like `_exporter_expand_regexp`, but given a regexp-like string instead
         of a tag name.
 
-        The default implementation greps through @EXPORT_OK.
+        The default implementation greps through @EXPORT_OK for imports, and
+        the list of already-imported functions for exports.
 
     `_exporter_expand_sub($name, $args, $globals)`
         This method is called to translate a sub name to a hash of name =>
@@ -261,6 +283,9 @@ TIPS AND TRICKS EXPORTING USING EXPORTER::TINY
         you need to override it, it's probably a good idea to just pre-process
         the arguments and then call the super method rather than trying to
         handle all of it yourself.
+
+    `_exporter_uninstall_sub($name, $args, $globals)`
+        The opposite of `_exporter_install_sub`.
 
 DIAGNOSTICS
     Overwriting existing sub '%s::%s' with sub '%s' exported by %s
