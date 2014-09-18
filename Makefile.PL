@@ -25,8 +25,8 @@ my $meta = {
                         },
                       },
   "provides"       => {
-                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => "0.041_01" },
-                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => "0.041_01" },
+                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => "0.041_02" },
+                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => "0.041_02" },
                       },
   "release_status" => "testing",
   "resources"      => {
@@ -43,7 +43,7 @@ my $meta = {
                         x_identifier => "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
                         x_IRC        => "irc://irc.perl.org/#moops",
                       },
-  "version"        => "0.041_01",
+  "version"        => "0.041_02",
 };
 
 my %dynamic_config;

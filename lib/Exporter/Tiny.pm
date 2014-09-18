@@ -5,7 +5,7 @@ use strict;
 use warnings; no warnings qw(void once uninitialized numeric redefine);
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.041_01';
+our $VERSION   = '0.041_02';
 our @EXPORT_OK = qw< mkopt mkopt_hash _croak _carp >;
 
 sub _croak ($;@) { require Carp; my $fmt = shift; @_ = sprintf($fmt, @_); goto \&Carp::croak }
@@ -42,7 +42,6 @@ sub import
 	my $class = shift;
 	my $global_opts = +{ @_ && ref($_[0]) eq q(HASH) ? %{+shift} : () };
 	$global_opts->{into} = caller unless exists $global_opts->{into};
-	$class->_exporter_validate_opts($global_opts);
 	
 	my @want;
 	my %not_want; $global_opts->{not} = \%not_want;
@@ -51,6 +50,7 @@ sub import
 	$class->$_process_optlist($global_opts, $opts, \@want, \%not_want);
 	
 	my $permitted = $class->_exporter_permitted_regexp($global_opts);
+	$class->_exporter_validate_opts($global_opts);
 	
 	for my $wanted (@want)
 	{
@@ -68,7 +68,6 @@ sub unimport
 	my $global_opts = +{ @_ && ref($_[0]) eq q(HASH) ? %{+shift} : () };
 	$global_opts->{into} = caller unless exists $global_opts->{into};
 	$global_opts->{is_unimport} = 1;
-	$class->_exporter_validate_unimport_opts($global_opts);
 	
 	my @want;
 	my %not_want; $global_opts->{not} = \%not_want;
@@ -77,6 +76,7 @@ sub unimport
 	$class->$_process_optlist($global_opts, $opts, \@want, \%not_want);
 	
 	my $permitted = $class->_exporter_permitted_regexp($global_opts);
+	$class->_exporter_validate_unimport_opts($global_opts);
 	
 	my $expando = $class->can('_exporter_expand_sub');
 	$expando = undef if $expando == \&_exporter_expand_sub;
@@ -776,13 +776,16 @@ B<< Features: >>
  Can export code symbols............. Yes     Yes     Yes     Yes      
  Can export non-code symbols......... Yes                              
  Groups/tags......................... Yes     Yes     Yes     Yes      
- Config avoids package variables.....                 Yes              
+ Export by regexp.................... Yes     Yes                      
+ Bang prefix......................... Yes     Yes                      
  Allows renaming of subs.............         Yes     Yes     Maybe    
  Install code into scalar refs.......         Yes     Yes     Maybe    
  Can be passed an "into" parameter...         Yes     Yes     Maybe    
  Can be passed an "installer" sub....         Yes     Yes     Maybe    
+ Config avoids package variables.....                 Yes              
  Supports generators.................         Yes     Yes              
  Sane API for generators.............         Yes     Yes              
+ Unimport............................         Yes                      
 
 (Certain Sub::Exporter::Progressive features are only available if
 Sub::Exporter is installed.)
