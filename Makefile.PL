@@ -7,7 +7,7 @@ my $meta = {
   "abstract"       => "an exporter with the features of Sub::Exporter but only core dependencies",
   "author"         => ["Toby Inkster (TOBYINK) <tobyink\@cpan.org>"],
   "dynamic_config" => 0,
-  "generated_by"   => "Dist::Inkt::Profile::TOBYINK version 0.023, CPAN::Meta::Converter version 2.140640",
+  "generated_by"   => "Dist::Inkt::Profile::TOBYINK version 0.023, CPAN::Meta::Converter version 2.142690",
   "keywords"       => [],
   "license"        => ["perl_5"],
   "meta-spec"      => {
@@ -25,10 +25,10 @@ my $meta = {
                         },
                       },
   "provides"       => {
-                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => 0.042 },
-                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => 0.042 },
+                        "Exporter::Shiny" => { file => "lib/Exporter/Shiny.pm", version => "0.043_01" },
+                        "Exporter::Tiny"  => { file => "lib/Exporter/Tiny.pm", version => "0.043_01" },
                       },
-  "release_status" => "stable",
+  "release_status" => "testing",
   "resources"      => {
                         bugtracker   => {
                                           web => "http://rt.cpan.org/Dist/Display.html?Queue=Exporter-Tiny",
@@ -43,7 +43,7 @@ my $meta = {
                         x_identifier => "http://purl.org/NET/cpan-uri/dist/Exporter-Tiny/project",
                         x_IRC        => "irc://irc.perl.org/#moops",
                       },
-  "version"        => 0.042,
+  "version"        => "0.043_01",
 };
 
 my %dynamic_config;
